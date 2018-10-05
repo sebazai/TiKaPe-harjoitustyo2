@@ -8,31 +8,24 @@
     <body>
         <h1>Kysymykset</h1>
         
-        <span th:each="arvo: $(lista)">
-            <h1>Kurssi: <h1><h1 th:text="$(arvo.nimi)"></h1>
-            <br />
-            <span th:each="aihe: $(arvo.aiheet)">
-                <h3>Aihe: </h3><h3 th:text="$(aihe.getAihe())"></h3>
-                    <ul>
-                        <li th:each="kysymys: $(aihe.aiheenKysymykset)">
-                            <span th=text="$(kysymys)">
-                                :)
-                            </span>
-                        </li>
-                    </ul>
-            </span>
-            
-        </span>
-        <ul>
-            <li th:each="arvo : ${lista}">
-                <span th:text="${arvo}">
-                    :DD
+        <div>
+            <div th:each="kurssi: ${lista}">
+                <h2>Kurssi: <span th:text="${kurssi.getKurssi()}"></span></h2>
+                <span th:each="aihe: ${kurssi.getAiheet()}">
+                    <h3>Aihe: <span th:text="${aihe.getAihe()}"></span></h3>
+                        <ul>
+                            <li th:each="kysymys: ${aihe.getKysymykset()}">
+                                <a th:href="@{'kysymys/' + ${kysymys.getId()}}" th:text="${kysymys.getKysymys()}">
+                                    :)
+                                </a>
+                            </li>
+                        </ul>
                 </span>
-            </li>
-        </ul>
+            </div>
+        </div>
         
         <h2>Luo uusi kysymys</h2>
-        <form>
+        <form method="POST" action="/uusikysymys">
             <table>
               <tbody><tr>
                 <td>

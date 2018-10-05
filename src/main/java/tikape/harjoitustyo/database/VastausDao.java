@@ -27,7 +27,7 @@ public class VastausDao implements Dao<Vastaus, Integer>  {
 
     @Override
     public Vastaus findOne(Integer key) throws SQLException {
-        PreparedStatement stmt = connection.prepareStatement("SELECT * FROM Vastaus WHERE id = ?");
+        PreparedStatement stmt = this.connection.prepareStatement("SELECT * FROM Vastaus WHERE id = ?");
         stmt.setObject(1, key);
 
         ResultSet rs = stmt.executeQuery();
@@ -40,57 +40,55 @@ public class VastausDao implements Dao<Vastaus, Integer>  {
         String nimi = rs.getString("vastausteksti");
         Boolean onkoOikein = rs.getBoolean("onkoOikein");
 
-        Vastaus o = new Vastaus(id, nimi, onkoOikein);
+        Vastaus v = new Vastaus(id, nimi, onkoOikein);
 
         rs.close();
         stmt.close();
-        connection.close();
 
-        return o;
+        return v;
     }
 
     @Override
     public List<Vastaus> findAll() throws SQLException {
 
-        PreparedStatement stmt = connection.prepareStatement("SELECT * FROM Vastaus");
+        PreparedStatement stmt = this.connection.prepareStatement("SELECT * FROM Vastaus");
 
         ResultSet rs = stmt.executeQuery();
-        List<Vastaus> kurssit = new ArrayList<>();
+        List<Vastaus> vastaukset = new ArrayList<>();
         while (rs.next()) {
             Integer id = rs.getInt("id");
             String nimi = rs.getString("vastausteksti");
             Boolean onkoOikein = rs.getBoolean("onkoOikein");
-
-            kurssit.add(new Vastaus(id, nimi, onkoOikein));
+            vastaukset.add(new Vastaus(id, nimi, onkoOikein));
         }
 
         rs.close();
         stmt.close();
-        connection.close();
 
-        return kurssit;
+        return vastaukset;
     }
 
     @Override
     public void delete(Integer key) throws SQLException {
-        // ei toteutettu
+        PreparedStatement stmt = this.connection.prepareStatement("DELETE FROM Vastaus WHERE Vastaus.id = ?");
+        stmt.setInt(1, key);
+        stmt.execute();
+        stmt.close();
     }
     
-     @Override
-    public Vastaus saveOrUpdate(Vastaus object) throws SQLException {
-        // jos asiakkaalla ei ole pääavainta, oletetaan, että asiakasta
-        // ei ole vielä tallennettu tietokantaan ja tallennetaan asiakas
-        if (object.getId() == null) {
-            //return save(object);
-        } else {
-            // muulloin päivitetään asiakas
-            //return update(object);
-        }
-        return object;
+    @Override
+    public void save(Vastaus object) throws SQLException {
+      PreparedStatement stmt
+                    = this.connection.prepareStatement("INSERT INTO Vastaus (vastausteksti, onkoOikein, kysymys_id) VALUES (?, ?, ?)");
+            stmt.setString(1, object.getVastaus());
+            stmt.setBoolean(2, object.getOikein());
+            stmt.setInt(3, object.getId());
+            
+            stmt.executeUpdate();
     }
 
     List<Vastaus> findAllVastausWithKysymysID(Integer id) throws SQLException {
-        PreparedStatement stmt = connection.prepareStatement("SELECT * FROM Vastaus WHERE kysymys_id = ?");
+        PreparedStatement stmt = this.connection.prepareStatement("SELECT * FROM Vastaus WHERE kysymys_id = ?");
         stmt.setInt(1, id);
 
         ResultSet rs = stmt.executeQuery();
@@ -104,7 +102,6 @@ public class VastausDao implements Dao<Vastaus, Integer>  {
 
         rs.close();
         stmt.close();
-        connection.close();
 
         return vastauksetKysymykselle;
     }

@@ -27,6 +27,18 @@ public class Vastaus {
     public void setId(Integer id) {
         this.id = id;
     }
+    
+    public Boolean getOikein() {
+        return this.onkoOikein;
+    }
+    
+    public String getVastausOikeus() {
+        if (this.onkoOikein) {
+            return "Oikein";
+        } else {
+            return "Väärin";
+        }
+    }
 
     public String getVastaus() {
         return vastausteksti;

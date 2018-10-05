@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+    
+    <head>
+        <title>Harjoitustyo</title>
+    </head>
+    
+    <body>
+    <div>
+        <h1 th:text="${kysymys.getKysymys()}"></h1>
+        <div>Kurssi: <span th:text="${kurssi}"></span></div>
+        <div>Aihepiiri: <span th:text="${aihepiiri}"></span></div>
+        <ul>
+            
+                <li th:each="vastaus: ${kysymys.getVastaukset()}">
+                    <form method="POST" action="#" th:action="@{'../kysymys/' + ${kysymys.getId()} + '/vastaus/' + ${vastaus.getId()}}">
+                    <span th:text="${vastaus.getVastaus()}">
+                        :)
+                    </span>
+                    &nbsp;
+                    <strong><span th:text="${vastaus.getVastausOikeus()}"></span></strong>
+                        <span>
+                            <input type="submit" value="Poista">
+                        </span>
+                    </form>
+                </li>
+        </ul>
+    </div>
+    <h2>Luo uusi vastausvaihtoehto</h2>
+
+        <form method="POST" action="#" th:action="@{'../kysymys/' + ${kysymys.getId()}}">
+          <table>
+            <tbody><tr>
+              <td>
+                Vastausteksti:
+              </td>
+              <td>
+                  <input type="text" name="vastausteksti">
+              </td>
+            </tr>
+            <tr>
+              <td>
+                Oikein:
+              </td>
+              <td>
+                  <input type="checkbox" name="totta">
+              </td>
+            </tr>
+          </tbody></table>
+
+          <input type="submit" value="Luo">
+        </form>
+
+        <ul>
+          <li>
+            <a href="../../">Kysymysten listaukseen</a>
+          </li>
+        </ul>
+    </body>
+    
+</html>

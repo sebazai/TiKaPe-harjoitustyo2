@@ -20,14 +20,16 @@ import tikape.harjoitustyo.domain.Kysymys;
  */
 public class AiheDao implements Dao<Aihe, Integer>{
     private Connection connection;
-    private KysymysDao kysymysdao = new KysymysDao(connection);
+    private KysymysDao kysymysdao;
 
     public AiheDao(Connection database) {
         this.connection = database;
+        this.kysymysdao = new KysymysDao(connection);
     }
 
     @Override
     public Aihe findOne(Integer key) throws SQLException {
+        
         PreparedStatement stmt = connection.prepareStatement("SELECT * FROM Aihe WHERE id = ?");
         stmt.setObject(1, key);
 
@@ -39,36 +41,34 @@ public class AiheDao implements Dao<Aihe, Integer>{
 
         Integer id = rs.getInt("id");
         String aiheenNimi = rs.getString("aiheenNimi");
-        List<Kysymys> kyssari = kysymysdao.findAllKysymyksetWithAiheID(id);
+        List<Kysymys> kyssari = this.kysymysdao.findAllKysymyksetWithAiheID(id);
 
-        Aihe o = new Aihe(id, aiheenNimi, kyssari);
+        Aihe a = new Aihe(id, aiheenNimi, kyssari);
 
         rs.close();
         stmt.close();
-        connection.close();
 
-        return o;
+        return a;
     }
 
     @Override
     public List<Aihe> findAll() throws SQLException {
-
+        KysymysDao kysymysdao = new KysymysDao(connection);
         PreparedStatement stmt = connection.prepareStatement("SELECT * FROM Aihe");
 
         ResultSet rs = stmt.executeQuery();
-        List<Aihe> kurssit = new ArrayList<>();
+        List<Aihe> aiheet = new ArrayList<>();
         while (rs.next()) {
             Integer id = rs.getInt("id");
             String aiheennimi = rs.getString("aiheenNimi");
             List<Kysymys> kyssari = kysymysdao.findAllKysymyksetWithAiheID(id);
-            kurssit.add(new Aihe(id, aiheennimi,kyssari));
+            aiheet.add(new Aihe(id, aiheennimi,kyssari));
         }
 
         rs.close();
         stmt.close();
-        connection.close();
 
-        return kurssit;
+        return aiheet;
     }
 
     @Override
@@ -77,67 +77,13 @@ public class AiheDao implements Dao<Aihe, Integer>{
     }
     
     @Override
-    public Aihe saveOrUpdate(Aihe object) throws SQLException {
-        // jos asiakkaalla ei ole pääavainta, oletetaan, että asiakasta
-        // ei ole vielä tallennettu tietokantaan ja tallennetaan asiakas
-        if (object.getId() == null) {
-            //return save(object);
-        } else {
-            // muulloin päivitetään asiakas
-            //return update(object);
-        }
-        return object;
+    public void save(Aihe object) throws SQLException {
+        
     }
     
-     /*private Aihe save(Aihe aihe) throws SQLException {
-
-        PreparedStatement stmt = connection.prepareStatement("INSERT INTO Todo"
-                + " (tehtava, tehty)"
-                + " VALUES (?, ?)");
-        stmt.setString(1, aihe.getAihe());
-        stmt.setBoolean(2, aihe.getTehty());
-
-        stmt.executeUpdate();
-        stmt.close();
-
-        stmt = connection.prepareStatement("SELECT * FROM Todo"
-                + " WHERE nimi = ? AND puhelinnumero = ?");
-        stmt.setString(1, aihe.getTehtava());
-        stmt.setBoolean(2, aihe.getTehty());
-
-        ResultSet rs = stmt.executeQuery();
-        rs.next(); // vain 1 tulos
-
-        Aihe t = new Aihe(rs.getInt("id"), rs.getString("tehtava"));
-
-        stmt.close();
-        rs.close();
-
-        connection.close();
-
-        return t;
-    }
-
-    private Todo update(Todo tehtavatodo) throws SQLException {
-
-        Connection conn = database.getConnection();
-        PreparedStatement stmt = conn.prepareStatement("UPDATE Todo SET"
-                + " tehtava = ?, puhelinnumero = ?, katuosoite = ?, postinumero = ?, postitoimipaikka = ? WHERE id = ?");
-        stmt.setString(1, tehtavatodo.getTehtava());
-        stmt.setBoolean(2, tehtavatodo.getTehty());
-        stmt.setInt(3, tehtavatodo.getId());
-
-
-        stmt.executeUpdate();
-
-        stmt.close();
-        conn.close();
-
-        return tehtavatodo;
-    }*/
 
     List<Aihe> findAllWithKurssiID(Integer id) throws SQLException {
-        PreparedStatement stmt = connection.prepareStatement("SELECT * FROM Aihe WHERE kurssi_id = ?");
+        PreparedStatement stmt = this.connection.prepareStatement("SELECT * FROM Aihe WHERE kurssi_id = ?");
         stmt.setInt(1, id);
 
         ResultSet rs = stmt.executeQuery();
@@ -145,15 +91,21 @@ public class AiheDao implements Dao<Aihe, Integer>{
         while (rs.next()) {
             Integer aihe_id = rs.getInt("id");
             String aiheennimi = rs.getString("aiheenNimi");
-            List<Kysymys> aiheenKysymykset = kysymysdao.findAllKysymyksetWithAiheID(aihe_id);
+            List<Kysymys> aiheenKysymykset = this.kysymysdao.findAllKysymyksetWithAiheID(aihe_id);
             aiheetKurssille.add(new Aihe(aihe_id, aiheennimi, aiheenKysymykset));
         }
 
         rs.close();
         stmt.close();
-        connection.close();
 
         return aiheetKurssille;
+    }
+
+    public String findAiheNameForKyssari(Integer id) throws SQLException {
+        PreparedStatement stmt = this.connection.prepareStatement("SELECT aiheenNimi FROM Aihe, Kysymys WHERE Kysymys.id = ? AND Kysymys.aihe_id = Aihe.id;");
+        stmt.setInt(1, id);
+        ResultSet rs = stmt.executeQuery();
+        return rs.getString("aiheenNimi");
     }
     
 }

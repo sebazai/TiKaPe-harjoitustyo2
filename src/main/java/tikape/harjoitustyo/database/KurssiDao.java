@@ -17,10 +17,11 @@ import tikape.harjoitustyo.domain.Kurssi;
 public class KurssiDao implements Dao<Kurssi, Integer> {
 
     private Connection connection;
-    private AiheDao aihedao = new AiheDao(connection);
+    private AiheDao aihedao;
     
     public KurssiDao(Connection database) {
         this.connection = database;
+        this.aihedao = new AiheDao(this.connection);
     }
     
 
@@ -37,34 +38,31 @@ public class KurssiDao implements Dao<Kurssi, Integer> {
 
         Integer id = rs.getInt("id");
         String nimi = rs.getString("nimi");
-        List<Aihe> aiheet = aihedao.findAllWithKurssiID(id);
+        List<Aihe> aiheet = this.aihedao.findAllWithKurssiID(id);
 
-        Kurssi o = new Kurssi(id, nimi, aiheet);
+        Kurssi k = new Kurssi(id, nimi, aiheet);
 
         rs.close();
         stmt.close();
-        connection.close();
 
-        return o;
+        return k;
     }
 
     @Override
     public List<Kurssi> findAll() throws SQLException {
-        
-        PreparedStatement stmt = connection.prepareStatement("SELECT * FROM Kurssi");
+        PreparedStatement stmt = this.connection.prepareStatement("SELECT * FROM Kurssi");
 
         ResultSet rs = stmt.executeQuery();
         List<Kurssi> kurssit = new ArrayList<>();
         while (rs.next()) {
             Integer id = rs.getInt("id");
             String nimi = rs.getString("nimi");
-            List<Aihe> aiheet = aihedao.findAllWithKurssiID(id);
+            List<Aihe> aiheet = this.aihedao.findAllWithKurssiID(id);
             kurssit.add(new Kurssi(id, nimi, aiheet));
         }
 
         rs.close();
         stmt.close();
-        connection.close();
 
         return kurssit;
     }
@@ -75,16 +73,14 @@ public class KurssiDao implements Dao<Kurssi, Integer> {
     }
     
     @Override
-    public Kurssi saveOrUpdate(Kurssi object) throws SQLException {
-        // jos asiakkaalla ei ole pääavainta, oletetaan, että asiakasta
-        // ei ole vielä tallennettu tietokantaan ja tallennetaan asiakas
-        if (object.getId() == null) {
-            //return save(object);
-        } else {
-            // muulloin päivitetään asiakas
-            //return update(object);
-        }
-        return object;
-    }
+    public void save(Kurssi object) throws SQLException {
 
+    }
+    
+    public String findKurssiNameForKyssari(Integer id) throws SQLException {
+        PreparedStatement stmt = this.connection.prepareStatement("SELECT nimi FROM Kurssi, Aihe, Kysymys WHERE Kysymys.id = ? AND Kysymys.aihe_id = Aihe.id AND Kurssi.id = Aihe.kurssi_id;");
+        stmt.setInt(1, id);
+        ResultSet rs = stmt.executeQuery();
+        return rs.getString("nimi");
+    }
 }
