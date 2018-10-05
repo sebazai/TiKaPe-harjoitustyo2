@@ -11,6 +11,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import tikape.harjoitustyo.domain.Kysymys;
 import tikape.harjoitustyo.domain.Vastaus;
 
 /**
@@ -36,7 +37,7 @@ public class VastausDao implements Dao<Vastaus, Integer>  {
         }
 
         Integer id = rs.getInt("id");
-        String nimi = rs.getString("nimi");
+        String nimi = rs.getString("vastausteksti");
         Boolean onkoOikein = rs.getBoolean("onkoOikein");
 
         Vastaus o = new Vastaus(id, nimi, onkoOikein);
@@ -57,7 +58,7 @@ public class VastausDao implements Dao<Vastaus, Integer>  {
         List<Vastaus> kurssit = new ArrayList<>();
         while (rs.next()) {
             Integer id = rs.getInt("id");
-            String nimi = rs.getString("nimi");
+            String nimi = rs.getString("vastausteksti");
             Boolean onkoOikein = rs.getBoolean("onkoOikein");
 
             kurssit.add(new Vastaus(id, nimi, onkoOikein));
@@ -73,5 +74,38 @@ public class VastausDao implements Dao<Vastaus, Integer>  {
     @Override
     public void delete(Integer key) throws SQLException {
         // ei toteutettu
+    }
+    
+     @Override
+    public Vastaus saveOrUpdate(Vastaus object) throws SQLException {
+        // jos asiakkaalla ei ole pääavainta, oletetaan, että asiakasta
+        // ei ole vielä tallennettu tietokantaan ja tallennetaan asiakas
+        if (object.getId() == null) {
+            //return save(object);
+        } else {
+            // muulloin päivitetään asiakas
+            //return update(object);
+        }
+        return object;
+    }
+
+    List<Vastaus> findAllVastausWithKysymysID(Integer id) throws SQLException {
+        PreparedStatement stmt = connection.prepareStatement("SELECT * FROM Vastaus WHERE kysymys_id = ?");
+        stmt.setInt(1, id);
+
+        ResultSet rs = stmt.executeQuery();
+        List<Vastaus> vastauksetKysymykselle = new ArrayList<>();
+        while (rs.next()) {
+            Integer vastaus_id = rs.getInt("id");
+            String vastaus = rs.getString("vastausteksti");
+            Boolean onkoOikein = rs.getBoolean("onkoOikein");
+            vastauksetKysymykselle.add(new Vastaus(vastaus_id, vastaus, onkoOikein));
+        }
+
+        rs.close();
+        stmt.close();
+        connection.close();
+
+        return vastauksetKysymykselle;
     }
 }

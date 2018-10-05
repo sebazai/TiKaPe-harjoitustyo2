@@ -16,12 +16,12 @@ public class Aihe {
     
     private Integer id;
     private String aiheenNimi;
-    private ArrayList<Kysymys> kysymykset;
+    private List<Kysymys> kysymykset;
 
-    public Aihe(Integer id, String aiheenNimi) {
+    public Aihe(Integer id, String aiheenNimi, List<Kysymys> kyssarit) {
         this.id = id;
         this.aiheenNimi = aiheenNimi;
-        this.kysymykset = new ArrayList<>();
+        this.kysymykset = kyssarit;
     }
 
     public Integer getId() {

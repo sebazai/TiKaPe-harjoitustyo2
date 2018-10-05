@@ -11,6 +11,7 @@ import spark.ModelAndView;
 import spark.Spark;
 import spark.template.thymeleaf.ThymeleafTemplateEngine;
 import tikape.harjoitustyo.domain.Kurssi;
+import tikape.harjoitustyo.database.KurssiDao;
 
 public class Main {
 
@@ -19,26 +20,11 @@ public class Main {
         if (System.getenv("PORT") != null) {
             Spark.port(Integer.valueOf(System.getenv("PORT")));
         }
+        KurssiDao kurssidao = new KurssiDao(getConnection());
 
         Spark.get("/", (req, res) -> {
 
-            List<Kurssi> kurssit = new ArrayList<>();
-
-            // avaa yhteys tietokantaan
-            Connection conn = getConnection();
-            
-            // tee kysely
-            PreparedStatement stmt
-                    = conn.prepareStatement("SELECT * FROM Kurssi");
-            ResultSet tulos = stmt.executeQuery();
-
-            // käsittele kyselyn tulokset
-            while (tulos.next()) {
-                String nimi = tulos.getString("nimi");
-                //kurssit.add(nimi);
-            }
-            // sulje yhteys tietokantaan
-            conn.close();
+            List<Kurssi> kurssit = kurssidao.findAll();
 
             HashMap map = new HashMap<>();
 

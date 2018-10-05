@@ -17,12 +17,12 @@ public class Kurssi {
 
     private Integer id;
     private String nimi;
-    private ArrayList<Aihe> aiheet;
+    private List<Aihe> aiheet;
 
-    public Kurssi(Integer id, String nimi) {
+    public Kurssi(Integer id, String nimi, List<Aihe> aiheet) {
         this.id = id;
         this.nimi = nimi;
-        this.aiheet = new ArrayList<>();
+        this.aiheet = aiheet;
     }
     
     public List<Aihe> getAiheet() {

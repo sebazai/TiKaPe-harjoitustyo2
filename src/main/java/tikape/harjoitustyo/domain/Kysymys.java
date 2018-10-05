@@ -5,7 +5,6 @@
  */
 package tikape.harjoitustyo.domain;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -16,12 +15,12 @@ public class Kysymys {
     
     private Integer id;
     private String kyssari;
-    private ArrayList<Vastaus> vastaukset;
+    private List<Vastaus> vastaukset;
 
-    public Kysymys(Integer id, String kyssari) {
+    public Kysymys(Integer id, String kyssari, List<Vastaus> vastaukset) {
         this.id = id;
         this.kyssari = kyssari;
-        this.vastaukset = new ArrayList<>();
+        this.vastaukset = vastaukset;
     }
 
     public Integer getId() {

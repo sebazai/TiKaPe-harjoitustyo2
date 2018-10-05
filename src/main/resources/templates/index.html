@@ -8,6 +8,21 @@
     <body>
         <h1>Kysymykset</h1>
         
+        <span th:each="arvo: $(lista)">
+            <h1>Kurssi: <h1><h1 th:text="$(arvo.nimi)"></h1>
+            <br />
+            <span th:each="aihe: $(arvo.aiheet)">
+                <h3>Aihe: </h3><h3 th:text="$(aihe.getAihe())"></h3>
+                    <ul>
+                        <li th:each="kysymys: $(aihe.aiheenKysymykset)">
+                            <span th=text="$(kysymys)">
+                                :)
+                            </span>
+                        </li>
+                    </ul>
+            </span>
+            
+        </span>
         <ul>
             <li th:each="arvo : ${lista}">
                 <span th:text="${arvo}">
