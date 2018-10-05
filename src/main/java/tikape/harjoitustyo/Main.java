@@ -1,4 +1,4 @@
-package tikape.huonekalut;
+package tikape.harjoitustyo;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -21,7 +21,7 @@ public class Main {
 
         System.out.println("Hello world!");
 
-        Spark.get("*", (req, res) -> {
+        Spark.get("/", (req, res) -> {
 
             List<String> huonekalut = new ArrayList<>();
 
@@ -30,7 +30,7 @@ public class Main {
             
             // tee kysely
             PreparedStatement stmt
-                    = conn.prepareStatement("SELECT nimi FROM Huonekalu");
+                    = conn.prepareStatement("SELECT * FROM Kurssi");
             ResultSet tulos = stmt.executeQuery();
 
             // käsittele kyselyn tulokset
