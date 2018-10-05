@@ -2,19 +2,11 @@
 <html>
     
     <head>
-        <title>Huonekalut</title>
+        <title>Harjoitustyo</title>
     </head>
     
     <body>
-        <h1>Huonekalut</h1>
-        
-        <p>
-            Huonekalut nuo hienoja ovat, voi veljet, onpa ne somat.
-        </p>
-        
-        <p th:text="${lista}">
-            :D
-        </p>
+        <h1>Kysymykset</h1>
         
         <ul>
             <li th:each="arvo : ${lista}">
@@ -24,10 +16,37 @@
             </li>
         </ul>
         
-        <form action="/" method="POST">
-            <input type="text" name="huonekalu"/>
-            <input type="submit"/>
-        </form>
+        <h2>Luo uusi kysymys</h2>
+        <form>
+            <table>
+              <tbody><tr>
+                <td>
+                  Kurssi:
+                </td>
+                <td>
+                    <input name="kurssi" type="text">
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  Aihe:
+                </td>
+                <td>
+                    <input name="aihe" type="text">
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  Kysymysteksti:
+                </td>
+                <td>
+                    <input name="kysymysteksti" type="text">
+                </td>
+              </tr>
+            </tbody></table>
+
+            <input value="Luo" type="submit">
+          </form>
         
     </body>
     
