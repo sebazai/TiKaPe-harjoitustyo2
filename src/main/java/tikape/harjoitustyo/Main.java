@@ -10,6 +10,7 @@ import java.util.List;
 import spark.ModelAndView;
 import spark.Spark;
 import spark.template.thymeleaf.ThymeleafTemplateEngine;
+import tikape.harjoitustyo.domain.Kurssi;
 
 public class Main {
 
@@ -19,11 +20,9 @@ public class Main {
             Spark.port(Integer.valueOf(System.getenv("PORT")));
         }
 
-        System.out.println("Hello world!");
-
         Spark.get("/", (req, res) -> {
 
-            List<String> huonekalut = new ArrayList<>();
+            List<Kurssi> kurssit = new ArrayList<>();
 
             // avaa yhteys tietokantaan
             Connection conn = getConnection();
@@ -36,14 +35,14 @@ public class Main {
             // käsittele kyselyn tulokset
             while (tulos.next()) {
                 String nimi = tulos.getString("nimi");
-                huonekalut.add(nimi);
+                //kurssit.add(nimi);
             }
             // sulje yhteys tietokantaan
             conn.close();
 
             HashMap map = new HashMap<>();
 
-            map.put("lista", huonekalut);
+            map.put("lista", kurssit);
 
             return new ModelAndView(map, "index");
         }, new ThymeleafTemplateEngine());
