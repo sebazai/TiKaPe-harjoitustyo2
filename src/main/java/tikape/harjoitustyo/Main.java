@@ -40,7 +40,7 @@ public class Main {
             return new ModelAndView(map, "index");
         }, new ThymeleafTemplateEngine());
         
-        Spark.get("/poistakannatjaluo", (req, res) -> {
+        Spark.post("/poistakannatjaluo", (req, res) -> {
             Connection conn = getConnection();
             PreparedStatement stmt =
                     conn.prepareStatement("DELETE FROM Kurssi");
@@ -60,9 +60,9 @@ public class Main {
             stmt.close();
             
             conn.close();
-            HashMap map = new HashMap<>();
-            return new ModelAndView(map, "index");
-        }, new ThymeleafTemplateEngine());
+            res.redirect("/");
+            return "";
+        });
         
         //haetaan kaikki kysymyksen vastaukset ja aihepiiri + kurssinimi
         Spark.get("/kysymys/:id", (req, res) -> {
