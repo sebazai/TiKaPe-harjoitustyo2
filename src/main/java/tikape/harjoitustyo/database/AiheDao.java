@@ -147,10 +147,10 @@ public class AiheDao implements Dao<Aihe, Integer>{
             String aiheenNimi = rs.getString("aiheenNimi");
             List<Kysymys> kyssari = this.kysymysdao.findAllKysymyksetWithAiheID(id);
             // jos ei samaa kysymystä ole, niin lisätään se tietokantaan
-            //if(!kyssari.stream().map(kys -> kys.getKysymys()).anyMatch(kys -> kys.matches(kysymys))) {
+            if(!kyssari.stream().map(kys -> kys.getKysymys()).anyMatch(kys -> kys.matches(kysymys))) {
                 k = kyssaridao.save(new Kysymys(kysymys, id));
                 kyssari.add(k);
-            //}
+            }
             a = new Aihe(id, aiheenNimi, kyssari);
 
             rs.close();
