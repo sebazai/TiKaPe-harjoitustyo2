@@ -107,8 +107,8 @@ public class KurssiDao implements Dao<Kurssi, Integer> {
         AiheDao aihedao = new AiheDao(this.connection);
         Kurssi k;
         PreparedStatement stmt
-                    = this.connection.prepareStatement("SELECT * FROM Kurssi WHERE Kurssi.nimi = ?");
-            stmt.setString(1, kurssinnimi);
+                    = this.connection.prepareStatement("SELECT * FROM Kurssi WHERE Kurssi.nimi = LOWER(?)");
+            stmt.setString(1, kurssinnimi.toLowerCase());
         ResultSet rs = stmt.executeQuery();
         boolean hasOne = rs.next();
         if (!hasOne) {

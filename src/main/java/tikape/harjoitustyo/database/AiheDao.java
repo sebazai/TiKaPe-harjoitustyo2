@@ -133,8 +133,8 @@ public class AiheDao implements Dao<Aihe, Integer>{
     }
     
     public Aihe findAiheWithName(Integer kurssi_id, String aiheennimi, String kysymys) throws SQLException {
-        PreparedStatement stmt = connection.prepareStatement("SELECT * FROM Aihe WHERE aiheenNimi = ?");
-        stmt.setString(1, aiheennimi);
+        PreparedStatement stmt = connection.prepareStatement("SELECT * FROM Aihe WHERE aiheenNimi = LOWER(?)");
+        stmt.setString(1, aiheennimi.toLowerCase());
         Aihe a;
         Kysymys k;
         KysymysDao kyssaridao = new KysymysDao(this.connection);
@@ -146,7 +146,7 @@ public class AiheDao implements Dao<Aihe, Integer>{
             Integer id = rs.getInt("id");
             String aiheenNimi = rs.getString("aiheenNimi");
             List<Kysymys> kyssari = this.kysymysdao.findAllKysymyksetWithAiheID(id);
-            // jos ei samaa kysymystä ole, niin lisätään se tietokantaan
+            // jos ei samaa kysymystä ole, niin lisätään se tietokantaan, jos on, ei lisätä
             if(!kyssari.stream().map(kys -> kys.getKysymys()).anyMatch(kys -> kys.toLowerCase().equals(kysymys.toLowerCase()))) {
                 k = kyssaridao.save(new Kysymys(kysymys, id));
                 kyssari.add(k);
