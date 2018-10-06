@@ -133,8 +133,8 @@ public class AiheDao implements Dao<Aihe, Integer>{
     }
     
     public Aihe findAiheWithName(Integer kurssi_id, String aiheennimi, String kysymys) throws SQLException {
-        PreparedStatement stmt = connection.prepareStatement("SELECT * FROM Aihe WHERE LOWER(aiheenNimi) = ?");
-        stmt.setString(1, aiheennimi.toLowerCase());
+        PreparedStatement stmt = connection.prepareStatement("SELECT * FROM Aihe WHERE aiheenNimi ILIKE ?");
+        stmt.setString(1, aiheennimi));
         Aihe a;
         Kysymys k;
         KysymysDao kyssaridao = new KysymysDao(this.connection);
