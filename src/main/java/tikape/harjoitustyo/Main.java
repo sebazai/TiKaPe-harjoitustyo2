@@ -43,10 +43,6 @@ public class Main {
         Spark.post("/poistakannatjaluo", (req, res) -> {
             Connection conn = getConnection();
             PreparedStatement stmt =
-                    conn.prepareStatement("DELETE FROM Kurssi");
-            stmt.execute();
-            stmt.close();
-            stmt =
                     conn.prepareStatement("DELETE FROM Vastaus");
             stmt.execute();
             stmt.close();
@@ -56,6 +52,11 @@ public class Main {
             stmt.close();
             stmt =
                     conn.prepareStatement("DELETE FROM Aihe");
+            stmt.execute();
+            stmt.close();
+            
+            stmt =
+                    conn.prepareStatement("DELETE FROM Kurssi");
             stmt.execute();
             stmt.close();
             
