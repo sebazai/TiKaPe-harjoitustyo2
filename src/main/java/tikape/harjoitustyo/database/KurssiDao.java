@@ -99,6 +99,7 @@ public class KurssiDao implements Dao<Kurssi, Integer> {
         PreparedStatement stmt = this.connection.prepareStatement("SELECT nimi FROM Kurssi, Aihe, Kysymys WHERE Kysymys.id = ? AND Kysymys.aihe_id = Aihe.id AND Kurssi.id = Aihe.kurssi_id;");
         stmt.setInt(1, id);
         ResultSet rs = stmt.executeQuery();
+        rs.next();
         return rs.getString("nimi");
     }
     

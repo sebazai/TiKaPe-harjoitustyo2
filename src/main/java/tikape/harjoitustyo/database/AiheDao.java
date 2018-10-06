@@ -128,6 +128,7 @@ public class AiheDao implements Dao<Aihe, Integer>{
         PreparedStatement stmt = this.connection.prepareStatement("SELECT aiheenNimi FROM Aihe, Kysymys WHERE Kysymys.id = ? AND Kysymys.aihe_id = Aihe.id;");
         stmt.setInt(1, id);
         ResultSet rs = stmt.executeQuery();
+        rs.next();
         return rs.getString("aiheenNimi");
     }
     
