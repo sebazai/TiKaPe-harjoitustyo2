@@ -101,5 +101,11 @@ public class TietokantaLuonti {
         stmt = conn.prepareStatement("INSERT INTO Vastaus (vastausteksti, onkoOikein, kysymys_id) VALUES ('Käynnistää BY-sovelluksessa salatilan, jonka avulla SQL-komennoista tulee noin 8% tehokkaampia.',false,2)");
         stmt.executeUpdate();
         stmt.close();
+        stmt = conn.prepareStatement("INSERT INTO Aihe (aiheenNimi, kurssi_id) VALUES ('Stream', 3)");
+        stmt.executeUpdate();
+        stmt.close();
+        stmt = conn.prepareStatement("INSERT INTO Kysymys (kyssari, aihe_id) VALUES ('Poista tämä ja keksi tänne kysymyksiä.', 4)");
+        stmt.executeUpdate();
+        stmt.close();
     }
 }
