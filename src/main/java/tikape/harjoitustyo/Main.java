@@ -2,9 +2,6 @@ package tikape.harjoitustyo;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import spark.ModelAndView;
@@ -14,6 +11,7 @@ import tikape.harjoitustyo.database.AiheDao;
 import tikape.harjoitustyo.domain.Kurssi;
 import tikape.harjoitustyo.database.KurssiDao;
 import tikape.harjoitustyo.database.KysymysDao;
+import tikape.harjoitustyo.database.TietokantaLuonti;
 import tikape.harjoitustyo.database.VastausDao;
 import tikape.harjoitustyo.domain.Kysymys;
 import tikape.harjoitustyo.domain.Vastaus;
@@ -42,24 +40,8 @@ public class Main {
         
         Spark.post("/poistakannatjaluo", (req, res) -> {
             Connection conn = getConnection();
-            PreparedStatement stmt =
-                    conn.prepareStatement("DELETE FROM Vastaus");
-            stmt.execute();
-            stmt.close();
-            stmt =
-                    conn.prepareStatement("DELETE FROM Kysymys");
-            stmt.execute();
-            stmt.close();
-            stmt =
-                    conn.prepareStatement("DELETE FROM Aihe");
-            stmt.execute();
-            stmt.close();
-            
-            stmt =
-                    conn.prepareStatement("DELETE FROM Kurssi");
-            stmt.execute();
-            stmt.close();
-            
+            TietokantaLuonti luoja = new TietokantaLuonti();
+            luoja.doYourThing(conn);
             conn.close();
             res.redirect("/");
             return "";
