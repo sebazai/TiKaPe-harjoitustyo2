@@ -5,9 +5,11 @@ Jos haluat paikallisesti ajaa tätä, niin TietokantaLuonti.java pitää muuttaa
 3. sanat "true" -> 1
 
 AiheDao.java:ssa muutettava rivi 136 SQL-kysely seuraavaksi
+
 SELECT * FROM Aihe WHERE aiheenNimi = ?
 
 Samoin KurssiDao, rivi 110 SQL-kysely
+
 SELECT * FROM Kurssi WHERE Kurssi.nimi = ?
 
 Tämän pitäisi toimia paikallisesti, mutta silloin Kurssinimi ja Aihe on case-sensitive, mikäli lisäät uusia kysymyksiä Kurssille ja Aiheelle.
