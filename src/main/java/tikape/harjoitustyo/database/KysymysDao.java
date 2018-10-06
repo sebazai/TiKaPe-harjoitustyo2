@@ -12,6 +12,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import tikape.harjoitustyo.domain.Aihe;
+import tikape.harjoitustyo.domain.Kurssi;
 import tikape.harjoitustyo.domain.Kysymys;
 import tikape.harjoitustyo.domain.Vastaus;
 
@@ -75,8 +76,29 @@ public class KysymysDao implements Dao<Kysymys, Integer>  {
     }
     
     @Override
-    public void save(Kysymys object) throws SQLException {
-   
+    public Kysymys save(Kysymys kysymys) throws SQLException {
+        PreparedStatement stmt =
+                this.connection.prepareStatement(
+                        "INSERT INTO Kysymys (kyssari, aihe_id) VALUES (?, ?);");
+        stmt.setString(1, kysymys.getKysymys());
+        stmt.setInt(2, kysymys.getAiheId());
+        stmt.executeUpdate();
+        stmt.close();
+        //haetaan kysymys
+        PreparedStatement statement = this.connection.prepareStatement("SELECT * FROM Kysymys WHERE kyssari = ?");
+        statement.setString(1, kysymys.getKysymys());
+
+        ResultSet result = statement.executeQuery();
+        result.next();
+        // vain 1 tulos
+        Integer id = result.getInt("id");
+        String kyssari = result.getString("kyssari");
+        List<Vastaus> haamulista = new ArrayList<>();
+        Kysymys k = new Kysymys(id, kyssari, haamulista);
+        
+        result.close();
+        statement.close();
+        return k;
     }
 
     List<Kysymys> findAllKysymyksetWithAiheID(Integer id) throws SQLException {

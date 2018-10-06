@@ -12,6 +12,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import tikape.harjoitustyo.domain.Aihe;
+import tikape.harjoitustyo.domain.Kurssi;
 import tikape.harjoitustyo.domain.Kysymys;
 
 /**
@@ -77,8 +78,31 @@ public class AiheDao implements Dao<Aihe, Integer>{
     }
     
     @Override
-    public void save(Aihe object) throws SQLException {
+    public Aihe save(Aihe object) throws SQLException {
+        KysymysDao kyssaridao = new KysymysDao(this.connection);
+        PreparedStatement stmt =
+                this.connection.prepareStatement("INSERT INTO Aihe (aiheenNimi, kurssi_id) VALUES (?, ?);");
+        stmt.setString(1, object.getAihe());
+        stmt.setInt(2, object.getUudenAiheenKurssiId());
+        stmt.executeUpdate();
+        stmt.close();
         
+        stmt = this.connection.prepareStatement("SELECT * FROM Aihe"
+                + " WHERE aiheenNimi = ?;");
+        stmt.setString(1, object.getAihe());
+
+        ResultSet rs = stmt.executeQuery();
+
+        rs.next(); // vain 1 tulos
+        Integer aihe_id = rs.getInt("id");
+        String aihe = rs.getString("aiheenNimi");
+        
+        //jos aihetta ei ole, niin ei ole myöskään kysymystä aiheelle, obviously
+        kyssaridao.save(new Kysymys(object.getUudenAiheenKysymys(), aihe_id));
+        Aihe a = new Aihe(aihe_id, aihe);
+        rs.close();
+        stmt.close();
+        return a;
     }
     
 
@@ -108,4 +132,32 @@ public class AiheDao implements Dao<Aihe, Integer>{
         return rs.getString("aiheenNimi");
     }
     
+    public Aihe findAiheWithName(Integer kurssi_id, String aiheennimi, String kysymys) throws SQLException {
+        PreparedStatement stmt = connection.prepareStatement("SELECT * FROM Aihe WHERE aiheenNimi = ?");
+        stmt.setString(1, aiheennimi);
+        Aihe a;
+        Kysymys k;
+        KysymysDao kyssaridao = new KysymysDao(this.connection);
+        ResultSet rs = stmt.executeQuery();
+        boolean hasOne = rs.next();
+        if (!hasOne) {
+            a = save(new Aihe(aiheennimi, kysymys, kurssi_id));
+        } else {
+            Integer id = rs.getInt("id");
+            String aiheenNimi = rs.getString("aiheenNimi");
+            List<Kysymys> kyssari = this.kysymysdao.findAllKysymyksetWithAiheID(id);
+            // jos ei samaa kysymystä ole, niin lisätään se tietokantaan
+            if(!kyssari.stream().map(kys -> kys.getKysymys()).anyMatch(kys -> kys.matches(kysymys))) {
+                k = kyssaridao.save(new Kysymys(kysymys, id));
+                kyssari.add(k);
+            }
+            a = new Aihe(id, aiheenNimi, kyssari);
+
+            rs.close();
+            stmt.close();
+        }
+        return a;
+    }
 }
+    
+

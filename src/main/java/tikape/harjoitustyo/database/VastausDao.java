@@ -77,7 +77,7 @@ public class VastausDao implements Dao<Vastaus, Integer>  {
     }
     
     @Override
-    public void save(Vastaus object) throws SQLException {
+    public Vastaus save(Vastaus object) throws SQLException {
       PreparedStatement stmt
                     = this.connection.prepareStatement("INSERT INTO Vastaus (vastausteksti, onkoOikein, kysymys_id) VALUES (?, ?, ?)");
             stmt.setString(1, object.getVastaus());
@@ -85,6 +85,7 @@ public class VastausDao implements Dao<Vastaus, Integer>  {
             stmt.setInt(3, object.getId());
             
             stmt.executeUpdate();
+            return new Vastaus(0, "haamuvastaus", true);
     }
 
     List<Vastaus> findAllVastausWithKysymysID(Integer id) throws SQLException {

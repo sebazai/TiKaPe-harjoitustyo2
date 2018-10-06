@@ -16,13 +16,23 @@ public class Kysymys {
     private Integer id;
     private String kyssari;
     private List<Vastaus> vastaukset;
+    private Integer aihe_id;
 
     public Kysymys(Integer id, String kyssari, List<Vastaus> vastaukset) {
         this.id = id;
         this.kyssari = kyssari;
         this.vastaukset = vastaukset;
     }
-
+    
+    public Kysymys(String kyssari, Integer aihe_id) {
+        this.kyssari = kyssari;
+        this.aihe_id = aihe_id;
+    }
+    
+    public Integer getAiheId() {
+        return this.aihe_id;
+    }
+    
     public Integer getId() {
         return id;
     }
@@ -40,7 +50,7 @@ public class Kysymys {
     }
 
     public String getKysymys() {
-        return kyssari;
+        return this.kyssari;
     }
 
     public void setKysymys(String kyssari) {

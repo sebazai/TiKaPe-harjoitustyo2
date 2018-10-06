@@ -73,14 +73,55 @@ public class KurssiDao implements Dao<Kurssi, Integer> {
     }
     
     @Override
-    public void save(Kurssi object) throws SQLException {
+    public Kurssi save(Kurssi kurssi) throws SQLException {
+        AiheDao aihedao = new AiheDao(this.connection);
+        PreparedStatement stmt =
+                this.connection.prepareStatement("INSERT INTO Kurssi (nimi) VALUES (?);");
+        stmt.setString(1, kurssi.getKurssi());
+        stmt.executeUpdate();
+        stmt.close();
+        stmt = this.connection.prepareStatement("SELECT * FROM Kurssi"
+                + " WHERE nimi = ?;");
+        stmt.setString(1, kurssi.getKurssi());
 
+        ResultSet rs = stmt.executeQuery();
+        rs.next(); // vain 1 tulos
+
+        Kurssi k = new Kurssi(rs.getInt("id"), rs.getString("nimi"));
+        //jos kurssia ei ole, niin ei ole myöskään aihetta kurssilel
+        rs.close();
+        aihedao.save(new Aihe(kurssi.getUudenAiheenNimi(), k.getUudenAiheenKysymys(),k.getId()));
+        stmt.close();
+        
+        return k;
     }
-    
     public String findKurssiNameForKyssari(Integer id) throws SQLException {
         PreparedStatement stmt = this.connection.prepareStatement("SELECT nimi FROM Kurssi, Aihe, Kysymys WHERE Kysymys.id = ? AND Kysymys.aihe_id = Aihe.id AND Kurssi.id = Aihe.kurssi_id;");
         stmt.setInt(1, id);
         ResultSet rs = stmt.executeQuery();
         return rs.getString("nimi");
+    }
+    
+    public Kurssi findKurssiOrCreateIt(String kurssinnimi, String aihe, String kysymys) throws SQLException {
+        AiheDao aihedao = new AiheDao(this.connection);
+        Kurssi k;
+        PreparedStatement stmt
+                    = this.connection.prepareStatement("SELECT * FROM Kurssi WHERE Kurssi.nimi = ?");
+            stmt.setString(1, kurssinnimi);
+        ResultSet rs = stmt.executeQuery();
+        boolean hasOne = rs.next();
+        if (!hasOne) {
+            k = save(new Kurssi(kurssinnimi, aihe, kysymys));
+        } else {
+            Integer id = rs.getInt("id");
+            String nimi = rs.getString("nimi");
+            //tarkistetaan onko aihetta ja jos, niin lisätään se kurssille
+            Aihe a = aihedao.findAiheWithName(id, aihe, kysymys);
+            List<Aihe> aiheet = new ArrayList<>();
+            aiheet.add(a);
+            k = new Kurssi(id, nimi, aiheet);
+        }
+        rs.close();
+        return k;
     }
 }

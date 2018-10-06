@@ -63,13 +63,10 @@ public class Main {
         //uusi kysymys pääsivulta
         Spark.post("/uusikysymys", (req, res) -> {
             Connection conn = getConnection();
-            String kurssi = req.queryParams("kurssi");
-            PreparedStatement stmt
-                    = conn.prepareStatement("SELECT * FROM Kurssi WHERE Kurssi.nimi = ?");
-            stmt.setString(1, kurssi);
+            KurssiDao kurssidao = new KurssiDao(conn);
+            Kurssi kurssi = kurssidao.findKurssiOrCreateIt(req.queryParams("kurssi"), 
+                    req.queryParams("aihe"), req.queryParams("kysymysteksti"));
             
-            stmt.execute();
-
             conn.close();
 
             res.redirect("/");
@@ -85,7 +82,7 @@ public class Main {
                 onkoOikein = true;
             }
             int kysymysId = Integer.parseInt(req.params(":id"));
-            vastausdao.save(new Vastaus(kysymysId, req.queryParams("vastausteksti"), onkoOikein));
+            Vastaus v = vastausdao.save(new Vastaus(kysymysId, req.queryParams("vastausteksti"), onkoOikein));
             res.redirect("/kysymys/" + kysymysId);
             return "";
         });

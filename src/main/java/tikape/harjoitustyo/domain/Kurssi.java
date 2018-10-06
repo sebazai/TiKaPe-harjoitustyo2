@@ -18,11 +18,32 @@ public class Kurssi {
     private Integer id;
     private String nimi;
     private List<Aihe> aiheet;
+    private String uudenAiheenNimi;
+    private String uusiKysymys;
 
     public Kurssi(Integer id, String nimi, List<Aihe> aiheet) {
         this.id = id;
         this.nimi = nimi;
         this.aiheet = aiheet;
+    }
+    
+    public Kurssi(String nimi, String aihe, String kysymys) {
+        this.nimi = nimi;
+        this.uudenAiheenNimi = aihe;
+        this.uusiKysymys = kysymys;
+    }
+    
+    public Kurssi(Integer id, String nimi) {
+        this.id = id;
+        this.nimi = nimi;
+    }
+    
+    public String getUudenAiheenNimi() {
+        return this.uudenAiheenNimi;
+    }
+    
+    public String getUudenAiheenKysymys() {
+        return this.uusiKysymys;
     }
     
     public List<Aihe> getAiheet() {
