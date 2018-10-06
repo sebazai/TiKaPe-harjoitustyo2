@@ -91,8 +91,11 @@ public class Main {
         Spark.post("/kysymys/:id/delete/", (req, res) -> {
             Connection conn = getConnection();
             KysymysDao kysymysdao = new KysymysDao(conn);
+            VastausDao vastausdao = new VastausDao(conn);
             int kysymysId = Integer.parseInt(req.params(":id"));
             kysymysdao.delete(kysymysId);
+            //poistetaan myös kaikki vastaukset tämän kyssärin takaa
+            vastausdao.deleteAllWithKysymysId(kysymysId);
             conn.close();
             res.redirect("/");
             return "";

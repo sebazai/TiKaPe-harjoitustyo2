@@ -67,6 +67,13 @@ public class VastausDao implements Dao<Vastaus, Integer>  {
 
         return vastaukset;
     }
+    
+    public void deleteAllWithKysymysId(Integer key) throws SQLException {
+        PreparedStatement stmt = this.connection.prepareStatement("DELETE FROM Vastaus WHERE Vastaus.kysymys_id = ?");
+        stmt.setInt(1, key);
+        stmt.execute();
+        stmt.close();
+    }
 
     @Override
     public void delete(Integer key) throws SQLException {
