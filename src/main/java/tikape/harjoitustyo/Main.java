@@ -40,6 +40,30 @@ public class Main {
             return new ModelAndView(map, "index");
         }, new ThymeleafTemplateEngine());
         
+        Spark.get("/poistakannatjaluo", (req, res) -> {
+            Connection conn = getConnection();
+            PreparedStatement stmt =
+                    conn.prepareStatement("DELETE FROM Kurssi");
+            stmt.execute();
+            stmt.close();
+            stmt =
+                    conn.prepareStatement("DELETE FROM Vastaus");
+            stmt.execute();
+            stmt.close();
+            stmt =
+                    conn.prepareStatement("DELETE FROM Kysymys");
+            stmt.execute();
+            stmt.close();
+            stmt =
+                    conn.prepareStatement("DELETE FROM Aihe");
+            stmt.execute();
+            stmt.close();
+            
+            conn.close();
+            HashMap map = new HashMap<>();
+            return new ModelAndView(map, "index");
+        }, new ThymeleafTemplateEngine());
+        
         //haetaan kaikki kysymyksen vastaukset ja aihepiiri + kurssinimi
         Spark.get("/kysymys/:id", (req, res) -> {
             Connection conn = getConnection();
