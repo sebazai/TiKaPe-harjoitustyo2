@@ -12,7 +12,7 @@
             <div th:each="kurssi: ${lista}">
                 <h2>Kurssi: <span th:text="${kurssi.getKurssi()}"></span></h2>
                 <span th:each="aihe: ${kurssi.getAiheet()}">
-                    <h3>Aihe: <span th:text="${aihe.getAihe()}"></span></h3>
+                    <h4>Aihe: <span th:text="${aihe.getAihe()}"></span></h4>
                         <ul>
                             
                             <li th:each="kysymys: ${aihe.getKysymykset()}">
