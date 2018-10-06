@@ -14,10 +14,16 @@
                 <span th:each="aihe: ${kurssi.getAiheet()}">
                     <h3>Aihe: <span th:text="${aihe.getAihe()}"></span></h3>
                         <ul>
+                            
                             <li th:each="kysymys: ${aihe.getKysymykset()}">
-                                <a th:href="@{'kysymys/' + ${kysymys.getId()}}" th:text="${kysymys.getKysymys()}">
-                                    :)
-                                </a>
+                                <form method="POST" action="#" th:action="@{'kysymys/' + ${kysymys.getId()} + '/delete/'}">
+                                    <a th:href="@{'kysymys/' + ${kysymys.getId()}}" th:text="${kysymys.getKysymys()}">
+                                        :)
+                                    </a>
+                                    <span>
+                                        <input type="submit" value="Poista">
+                                    </span>
+                                </form>
                             </li>
                         </ul>
                 </span>

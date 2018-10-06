@@ -83,7 +83,18 @@ public class Main {
             }
             int kysymysId = Integer.parseInt(req.params(":id"));
             Vastaus v = vastausdao.save(new Vastaus(kysymysId, req.queryParams("vastausteksti"), onkoOikein));
+            conn.close();
             res.redirect("/kysymys/" + kysymysId);
+            return "";
+        });
+        
+        Spark.post("/kysymys/:id/delete/", (req, res) -> {
+            Connection conn = getConnection();
+            KysymysDao kysymysdao = new KysymysDao(conn);
+            int kysymysId = Integer.parseInt(req.params(":id"));
+            kysymysdao.delete(kysymysId);
+            conn.close();
+            res.redirect("/");
             return "";
         });
         
