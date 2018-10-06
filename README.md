@@ -1,1 +1,1 @@
-# TiKaPe-harjoitustyo2
+# Tietokantojen perusteet Harjoitustyö 2
