@@ -96,7 +96,6 @@ public class AiheDao implements Dao<Aihe, Integer>{
         rs.next(); // vain 1 tulos
         Integer aihe_id = rs.getInt("id");
         String aihe = rs.getString("aiheenNimi");
-        
         //jos aihetta ei ole, niin ei ole myöskään kysymystä aiheelle, obviously
         kyssaridao.save(new Kysymys(object.getUudenAiheenKysymys(), aihe_id));
         Aihe a = new Aihe(aihe_id, aihe);
@@ -147,10 +146,10 @@ public class AiheDao implements Dao<Aihe, Integer>{
             String aiheenNimi = rs.getString("aiheenNimi");
             List<Kysymys> kyssari = this.kysymysdao.findAllKysymyksetWithAiheID(id);
             // jos ei samaa kysymystä ole, niin lisätään se tietokantaan
-            if(!kyssari.stream().map(kys -> kys.getKysymys()).anyMatch(kys -> kys.matches(kysymys))) {
+            //if(!kyssari.stream().map(kys -> kys.getKysymys()).anyMatch(kys -> kys.matches(kysymys))) {
                 k = kyssaridao.save(new Kysymys(kysymys, id));
                 kyssari.add(k);
-            }
+            //}
             a = new Aihe(id, aiheenNimi, kyssari);
 
             rs.close();

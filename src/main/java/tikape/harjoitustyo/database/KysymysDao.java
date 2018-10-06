@@ -85,7 +85,7 @@ public class KysymysDao implements Dao<Kysymys, Integer>  {
         stmt.executeUpdate();
         stmt.close();
         //haetaan kysymys
-        PreparedStatement statement = this.connection.prepareStatement("SELECT * FROM Kysymys WHERE kyssari = ?");
+        PreparedStatement statement = this.connection.prepareStatement("SELECT * FROM Kysymys WHERE kyssari = ?;");
         statement.setString(1, kysymys.getKysymys());
 
         ResultSet result = statement.executeQuery();

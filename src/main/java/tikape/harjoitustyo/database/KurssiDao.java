@@ -90,7 +90,7 @@ public class KurssiDao implements Dao<Kurssi, Integer> {
         Kurssi k = new Kurssi(rs.getInt("id"), rs.getString("nimi"));
         //jos kurssia ei ole, niin ei ole myöskään aihetta kurssilel
         rs.close();
-        aihedao.save(new Aihe(kurssi.getUudenAiheenNimi(), k.getUudenAiheenKysymys(),k.getId()));
+        aihedao.save(new Aihe(kurssi.getUudenAiheenNimi(), kurssi.getUudenAiheenKysymys(),k.getId()));
         stmt.close();
         
         return k;
