@@ -15,11 +15,9 @@ Jos haluat paikallisesti ajaa tätä, niin TietokantaLuonti.java pitää muuttaa
 2. sanat "false" -> 0
 3. sanat "true" -> 1
 
-AiheDao.java:ssa muutettava rivi 136 SQL-kysely seuraavaksi:
-SELECT * FROM Aihe WHERE aiheenNimi = ?;
-Samoin KurssiDao, rivi 110 SQL-kysely:
-SELECT * FROM Kurssi WHERE Kurssi.nimi = ?;
+AiheDao.java:ssa muutettava rivi 136 SQL-kysely seuraavaksi
 
+<<<<<<< HEAD
 Tämän pitäisi toimia paikallisesti, mutta silloin Kurssinimi ja Aihe on case-sensitive, mikäli lisäät uusia kysymyksiä Kurssille ja Aiheelle.
 
 # Tietokannat
@@ -34,3 +32,14 @@ CREATE TABLE Kysymys (id SERIAL PRIMARY KEY, kyssari VARCHAR(255), aihe_id INTEG
 
 CREATE TABLE Vastaus (id SERIAL PRIMARY KEY, vastausteksti VARCHAR(255), onkoOikein BOOLEAN, kysymys_id INTEGER NOT NULL, FOREIGN KEY (kysymys_id) REFERENCES Kysymys (id));
 
+=======
+SELECT * FROM Aihe WHERE aiheenNimi = ?
+
+Samoin KurssiDao, rivi 110 SQL-kysely
+
+SELECT * FROM Kurssi WHERE Kurssi.nimi = ?
+
+Tämän pitäisi toimia paikallisesti, mutta silloin Kurssinimi ja Aihe on case-sensitive, mikäli lisäät uusia kysymyksiä Kurssille ja Aiheelle.
+
+Heroku linkki: https://pure-inlet-36906.herokuapp.com/
+>>>>>>> 0314d8ee66d995056d3f325ff14e0fdb4878cafc
