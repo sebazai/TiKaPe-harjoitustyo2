@@ -1,4 +1,15 @@
 ﻿# Tietokantojen perusteet Harjoitustyö 2
+
+Sovellus tarjoaa seuraavat toiminnallisuudet:
+
+	Mahdollisuus kysymysten lisäämiseen palveluun. Kuhunkin kysymykseen kirjataan kysymykseen liittyvä kurssi, kysymyksen aihe (esim. normalisointi), ja kysymysteksti.
+	Mahdollisuus vastausvaihtoehtojen lisäämiseen kysymykseen. Vastausvaihtoehtoja voi olla kysymykseen liittyen rajaton määrä ja ne lisätään yksitellen. Kun vastausvaihtoehtoa lisätään, 	käyttäjä kirjoittaa vastausvaihtoehtoon liittyvän vastaustekstin sekä tiedon vastauksen oikeellisuudesta. 
+	Kysymyksen poistaminen
+	Vastausvaihtoehdon poistaminen
+	Kysymysten listaus
+	Kysymyksen katsominen (näyttää sekä kysymyksen että siihen liittyvät vastausvaihtoehdot)
+
+
 Jos haluat paikallisesti ajaa tätä, niin TietokantaLuonti.java pitää muuttaa kaikki nämä:
 1. id SERIAL PRIMARY KEY -> id INTEGER PRIMARY KEY
 2. sanat "false" -> 0
@@ -10,3 +21,16 @@ Samoin KurssiDao, rivi 110 SQL-kysely:
 SELECT * FROM Kurssi WHERE Kurssi.nimi = ?;
 
 Tämän pitäisi toimia paikallisesti, mutta silloin Kurssinimi ja Aihe on case-sensitive, mikäli lisäät uusia kysymyksiä Kurssille ja Aiheelle.
+
+# Tietokannat
+CREATE TABLE Kurssi (id SERIAL PRIMARY KEY, nimi VARCHAR(100));
+
+
+CREATE TABLE Aihe (id SERIAL PRIMARY KEY, aiheenNimi VARCHAR(100), kurssi_id INTEGER NOT NULL, FOREIGN KEY (kurssi_id) REFERENCES Kurssi (id));
+
+
+CREATE TABLE Kysymys (id SERIAL PRIMARY KEY, kyssari VARCHAR(255), aihe_id INTEGER NOT NULL, FOREIGN KEY (aihe_id) REFERENCES Aihe (id));
+
+
+CREATE TABLE Vastaus (id SERIAL PRIMARY KEY, vastausteksti VARCHAR(255), onkoOikein BOOLEAN, kysymys_id INTEGER NOT NULL, FOREIGN KEY (kysymys_id) REFERENCES Kysymys (id));
+
