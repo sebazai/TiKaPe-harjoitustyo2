@@ -6,20 +6,20 @@
     </head>
     
     <body>
-        <h1>Kysymykset</h1>
+        <h1 style="color: red;">Kysymyspankki</h1>
         
         <div>
             <div th:each="kurssi: ${lista}">
                 <h2>Kurssi: <span th:text="${kurssi.getKurssi()}"></span></h2>
                 <span th:each="aihe: ${kurssi.getAiheet()}">
-                    <h4>Aihe: <span th:text="${aihe.getAihe()}"></span></h4>
+                    <h4 style="color: olive;">Aihe: <span th:text="${aihe.getAihe()}"></span></h4>
                         <ul>
                             
                             <li th:each="kysymys: ${aihe.getKysymykset()}">
                                 <form method="POST" action="#" th:action="@{'kysymys/' + ${kysymys.getId()} + '/delete/'}">
                                     <a th:href="@{'kysymys/' + ${kysymys.getId()}}" th:text="${kysymys.getKysymys()}">
                                         :)
-                                    </a>
+                                    </a>&nbsp;
                                     <span>
                                         <input type="submit" value="Poista">
                                     </span>
@@ -61,9 +61,11 @@
 
             <input value="Luo" type="submit">
           </form>
-        <form method="POST" action="/poistakannatjaluo">
-            <input type="submit" value="Poista kaikki ja luo data uusiksi" />
-        </form>
+        <div style="padding-top: 20px">
+            <form method="POST" action="/poistakannatjaluo">
+                <input type="submit" value="Luo alkuperäinen data uusiksi" />
+            </form>
+        </div>
     </body>
     
 </html>
