@@ -4,16 +4,12 @@ Heroku linkki: https://pure-inlet-36906.herokuapp.com/
 
 Sovellus tarjoaa seuraavat toiminnallisuudet:
 
-	Mahdollisuus kysymysten lisäämiseen palveluun. Kuhunkin kysymykseen kirjataan
- kysymykseen liittyvä kurssi, kysymyksen aihe (esim. normalisointi), ja kysymysteksti.
-	Mahdollisuus vastausvaihtoehtojen lisäämiseen kysymykseen. Vastausvaihtoehtoja voi olla
- kysymykseen liittyen rajaton määrä ja ne lisätään yksitellen. Kun vastausvaihtoehtoa lisätään, 	käyttäjä kirjoittaa vastausvaihtoehtoon liittyvän vastaustekstin sekä tiedon vastauksen 
-oikeellisuudesta. 
-	Kysymyksen poistaminen
-	Vastausvaihtoehdon poistaminen
-	Kysymysten listaus
-	Kysymyksen katsominen (näyttää sekä kysymyksen että siihen liittyvät vastausvaihtoehdot)
-
+	1. Mahdollisuus kysymysten lisäämiseen palveluun. 
+	2. Mahdollisuus vastausvaihtoehtojen lisäämiseen kysymykseen. 
+	3. Kysymyksen poistaminen
+	4. Vastausvaihtoehdon poistaminen
+	5. Kysymysten listaus
+	6. Kysymyksen katsominen ja tämän vastaukset
 
 Jos haluat paikallisesti ajaa tätä, niin TietokantaLuonti.java pitää muuttaa kaikki nämä:
 1. id SERIAL PRIMARY KEY -> id INTEGER PRIMARY KEY
