@@ -2,6 +2,8 @@
 
 Heroku linkki: https://pure-inlet-36906.herokuapp.com/
 
+Nappi, "Palauta alkuperäinen data uusiksi", poistaa kaiken datan ja luo sovelluksen alkutilanteeseen.
+
 Sovellus tarjoaa seuraavat toiminnallisuudet:
 
 	1. Mahdollisuus kysymysten lisäämiseen palveluun. 
@@ -11,10 +13,10 @@ Sovellus tarjoaa seuraavat toiminnallisuudet:
 	5. Kysymysten listaus
 	6. Kysymyksen katsominen ja tämän vastaukset
 
-Jos haluat paikallisesti ajaa tätä, niin TietokantaLuonti.java pitää muuttaa kaikki nämä:
-1. id SERIAL PRIMARY KEY -> id INTEGER PRIMARY KEY
-2. sanat "false" -> 0
-3. sanat "true" -> 1
+Jos haluat paikallisesti ajaa tätä SQLiten avulla, niin TietokantaLuonti.java:ssa pitää muuttaa kaikki nämä:
+	1. id SERIAL PRIMARY KEY -> id INTEGER PRIMARY KEY
+	2. false -> 0
+	3. true -> 1
 
 AiheDao.java:ssa muutettava rivi 136 SQL-kysely seuraavaksi
 
