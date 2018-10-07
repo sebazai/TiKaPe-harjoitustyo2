@@ -1,9 +1,14 @@
 ﻿# Tietokantojen perusteet Harjoitustyö 2
 
+Heroku linkki: https://pure-inlet-36906.herokuapp.com/
+
 Sovellus tarjoaa seuraavat toiminnallisuudet:
 
-	Mahdollisuus kysymysten lisäämiseen palveluun. Kuhunkin kysymykseen kirjataan kysymykseen liittyvä kurssi, kysymyksen aihe (esim. normalisointi), ja kysymysteksti.
-	Mahdollisuus vastausvaihtoehtojen lisäämiseen kysymykseen. Vastausvaihtoehtoja voi olla kysymykseen liittyen rajaton määrä ja ne lisätään yksitellen. Kun vastausvaihtoehtoa lisätään, 	käyttäjä kirjoittaa vastausvaihtoehtoon liittyvän vastaustekstin sekä tiedon vastauksen oikeellisuudesta. 
+	Mahdollisuus kysymysten lisäämiseen palveluun. Kuhunkin kysymykseen kirjataan
+ kysymykseen liittyvä kurssi, kysymyksen aihe (esim. normalisointi), ja kysymysteksti.
+	Mahdollisuus vastausvaihtoehtojen lisäämiseen kysymykseen. Vastausvaihtoehtoja voi olla
+ kysymykseen liittyen rajaton määrä ja ne lisätään yksitellen. Kun vastausvaihtoehtoa lisätään, 	käyttäjä kirjoittaa vastausvaihtoehtoon liittyvän vastaustekstin sekä tiedon vastauksen 
+oikeellisuudesta. 
 	Kysymyksen poistaminen
 	Vastausvaihtoehdon poistaminen
 	Kysymysten listaus
@@ -17,7 +22,12 @@ Jos haluat paikallisesti ajaa tätä, niin TietokantaLuonti.java pitää muuttaa
 
 AiheDao.java:ssa muutettava rivi 136 SQL-kysely seuraavaksi
 
-<<<<<<< HEAD
+SELECT * FROM Aihe WHERE aiheenNimi = ?
+
+Samoin KurssiDao, rivi 110 SQL-kysely
+
+SELECT * FROM Kurssi WHERE Kurssi.nimi = ?
+
 Tämän pitäisi toimia paikallisesti, mutta silloin Kurssinimi ja Aihe on case-sensitive, mikäli lisäät uusia kysymyksiä Kurssille ja Aiheelle.
 
 # Tietokannat
@@ -32,14 +42,3 @@ CREATE TABLE Kysymys (id SERIAL PRIMARY KEY, kyssari VARCHAR(255), aihe_id INTEG
 
 CREATE TABLE Vastaus (id SERIAL PRIMARY KEY, vastausteksti VARCHAR(255), onkoOikein BOOLEAN, kysymys_id INTEGER NOT NULL, FOREIGN KEY (kysymys_id) REFERENCES Kysymys (id));
 
-=======
-SELECT * FROM Aihe WHERE aiheenNimi = ?
-
-Samoin KurssiDao, rivi 110 SQL-kysely
-
-SELECT * FROM Kurssi WHERE Kurssi.nimi = ?
-
-Tämän pitäisi toimia paikallisesti, mutta silloin Kurssinimi ja Aihe on case-sensitive, mikäli lisäät uusia kysymyksiä Kurssille ja Aiheelle.
-
-Heroku linkki: https://pure-inlet-36906.herokuapp.com/
->>>>>>> 0314d8ee66d995056d3f325ff14e0fdb4878cafc
