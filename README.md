@@ -14,6 +14,7 @@ Sovellus tarjoaa seuraavat toiminnallisuudet:
 	6. Kysymyksen katsominen ja tämän vastaukset
 
 Jos haluat paikallisesti ajaa tätä SQLiten avulla, niin TietokantaLuonti.java:ssa pitää muuttaa kaikki nämä:
+
 	1. id SERIAL PRIMARY KEY -> id INTEGER PRIMARY KEY
 	2. false -> 0
 	3. true -> 1
