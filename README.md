@@ -1,6 +1,10 @@
-﻿# Tietokantojen perusteet Harjoitustyö 2
+﻿# Sovelluksen kuvaus
 
-Heroku linkki: https://pure-inlet-36906.herokuapp.com/
+Sovelluksen tarkoituksena on toimia kysymyspankkina, mihin voi lisätä kysymyksiä ja tämän vastauksia. Kysymykselle on määriteltävä aihe ja kurssi. Kurssilla voi olla useampia aiheita, aiheilla voi olla useampi kysymys ja kysymyksellä voi olla monta vastausvaihtoehtoa. On huomioitava, että yksi vastausvaihtoehdoista on oltava oikein, jotta kysymyspankin kysymyksiä voi käyttää.
+
+# Muuta tietoa sovelluksesta.
+
+Heroku linkki, missä sovellus pyörii: https://pure-inlet-36906.herokuapp.com/
 
 Nappi, "Palauta alkuperäinen data uusiksi", poistaa kaiken datan ja luo sovelluksen alkutilanteeseen.
 
@@ -12,6 +16,8 @@ Sovellus tarjoaa seuraavat toiminnallisuudet:
 	4. Vastausvaihtoehdon poistaminen
 	5. Kysymysten listaus
 	6. Kysymyksen katsominen ja tämän vastaukset
+
+Nippelitietoa:
 
 Jos haluat paikallisesti ajaa tätä SQLiten avulla, niin TietokantaLuonti.java:ssa pitää muuttaa kaikki nämä:
 
@@ -29,7 +35,7 @@ Samoin KurssiDao, rivi 110 SQL-kysely
 
 Tämän pitäisi toimia paikallisesti, mutta silloin Kurssinimi ja Aihe on case-sensitive, mikäli lisäät uusia kysymyksiä Kurssille ja Aiheelle.
 
-# Tietokannat
+# Tietokannat HEROKU:ssa
 CREATE TABLE Kurssi (id SERIAL PRIMARY KEY, nimi VARCHAR(100));
 
 
