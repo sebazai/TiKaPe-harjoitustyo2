@@ -13,7 +13,7 @@
             <div style="display:block;" th:each="kurssi: ${lista}">
                 <h2 style="margin-block-end: 0.2em;">Kurssi: <span th:text="${kurssi.getKurssi()}"></span></h2>
                 <span style="border: 1px solid black; border-radius: 5px; display:table; margin-bottom: 5px;" th:each="aihe: ${kurssi.getAiheet()}">
-                    <h4 style="color: olive; padding: 5px 5px;">Aihe: <span th:text="${aihe.getAihe()}"></span></h4>
+                    <h4 style="padding: 5px 5px;">Aihe: <span th:text="${aihe.getAihe()}"></span></h4>
                         <ul>
                             
                             <li th:each="kysymys: ${aihe.getKysymykset()}" style="padding-right:5px;">
